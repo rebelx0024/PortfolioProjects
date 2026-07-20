@@ -25,7 +25,7 @@ FROM PortfolioProject.dbo.coviddeaths
 WHERE location LIKE '%states%'
 ORDER BY 1,2;
 
---Looking at countries with highest infection rate compared to population
+--Looking at countries with highest infection rate
 
 SELECT location, population, MAX(total_cases) as HighestInfectionCount, MAX((total_cases/population))*100 AS percentpopulationinfected
 FROM PortfolioProject.dbo.coviddeaths
@@ -33,7 +33,7 @@ FROM PortfolioProject.dbo.coviddeaths
 GROUP BY location, population
 ORDER BY percentpopulationinfected desc;
 
---Showing Countries with highest death count per population
+--Showing Countries with highest death count
 
 Select location, max(cast(total_deaths as int)) as totaldeathcount
 From portfolioproject.dbo.coviddeaths
@@ -49,7 +49,7 @@ Where continent is null
 group by location
 order by totaldeathcount desc;
 
---Showing continents with their respective highest country death counts
+--Showing continents with their respective highest individual country death counts
 
 Select continent, MAX(cast(total_deaths as int)) as TotalDeathCount
 From PortfolioProject.dbo.coviddeaths
@@ -88,7 +88,7 @@ and dea.date = vac.date
 where dea.continent is not null
 --order by 2,3
 )
-SELECT continent, location, MAX(population), SUM(convert(int,new_vaccinations)), MAX(rolling_vaccination_total), MAX((rolling_vaccination_total/population)*100) as vaccination_percentage
+SELECT continent, location, MAX(population) as population, MAX(rolling_vaccination_total) as vaccinations, MAX((rolling_vaccination_total/population)*100) as vaccination_percentage
 From PopvsVac
 GROUP BY continent, location
 Order by 2,3;
